@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://cn4vgdotyebc6"]
+
+[ext_resource type="Script" path="res://scripts/character.gd" id="1_2xj6a"]
+[ext_resource type="Texture2D" path="res://Frans-Sheet.png" id="2_jvug5"]
+[ext_resource type="Script" path="res://scripts/anchor.gd" id="3_tq3w2"]
+[ext_resource type="Texture2D" path="res://Anchor-Sheet.png" id="4_88br6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(14, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(1200, 80)
+
+[node name="Main" type="Node2D"]
+
+[node name="Character" type="CharacterBody2D" parent="."]
+position = Vector2(24, 88)
+anchor_path = NodePath("../Anchor")
+rope_line_path = NodePath("../RopeLine")
+script = ExtResource("1_2xj6a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character"]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Sprite2D" type="Sprite2D" parent="Character"]
+position = Vector2(0, -12)
+texture = ExtResource("2_jvug5")
+hframes = 9
+frame = 0
+centered = true
+texture_filter = 1
+
+[node name="Camera2D" type="Camera2D" parent="Character"]
+position = Vector2(0, -16)
+enabled = true
+
+[node name="RopeOrigin" type="Marker2D" parent="Character"]
+position = Vector2(0, -12)
+
+[node name="RopeLine" type="Line2D" parent="."]
+visible = false
+z_index = -1
+width = 1.0
+default_color = Color(0.886275, 0.87451, 0.756863, 1)
+points = PackedVector2Array(0, 0, 0, 0)
+
+[node name="Anchor" type="Node2D" parent="."]
+position = Vector2(96, 96)
+script = ExtResource("3_tq3w2")
+
+[node name="Sprite2D" type="Sprite2D" parent="Anchor"]
+texture = ExtResource("4_88br6")
+hframes = 2
+frame = 0
+centered = true
+texture_filter = 1
+
+[node name="RopeAttachPoint" type="Marker2D" parent="Anchor"]
+position = Vector2(0, 11)
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(120, 144)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Visual" type="Polygon2D" parent="Ground"]
+polygon = PackedVector2Array(-600, -40, 600, -40, 600, 40, -600, 40)
+color = Color(0.176471, 0.188235, 0.235294, 1)
